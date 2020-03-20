@@ -13,32 +13,25 @@ def gcd(a,b):
 def lcm(a,b): 
     return (a*b) / gcd(a,b)
 
+def gcdAndLcm(func):
+    
+    print("Enter numbers(In line separated by space)")
+    numbers = list(map(int,input().split()))
+    
+    res = func(numbers[0],numbers[1])
+    if len(numbers)>2:
+        for i in range(2,len(numbers)):
+            res = func(res,numbers[i])
+    print(int(res))
+    
 if __name__=="__main__":
     while(True):
         choice = int(input("Menu:\n1]LCM\n2]GCD/HCF\n3]Exit\nEnter Choice :: "))
         if choice == 1:
-            
-            print("Enter numbers(In line separated by space)")
-            numbers = list(map(int,input().split()))
-            
-            res = lcm(numbers[0],numbers[1])
-            
-            if len(numbers)>2:
-                for i in range(2,len(numbers)):
-                    res = lcm(res,numbers[i])
-            print(int(res))
-            
+            gcdAndLcm(lcm)
+        
         elif choice == 2:
-            
-            print("Enter numbers(In line separated by space)")
-            numbers = list(map(int,input().split()))
-            
-            res = gcd(numbers[0],numbers[1])
-            
-            if len(numbers)>2:
-                for i in range(2,len(numbers)):
-                    res = gcd(res,numbers[i])
-            print(res)
+            gcdAndLcm(gcd)
             
         elif choice == 3:
             break
