@@ -15,30 +15,47 @@ typedef set<int> si;
 const ll Mod = 1000000007;
 
 bitset <100000000> ready;
-ll value[100000000];
-vi coins = {2,4,100};
+ll value[100000000]={0};
+vi coins = {};
 
-ll solve(ll x) {
+ll solveRecursive(ll x) {
     if (x < 0) return INT_MAX;
     if (x == 0) return 0;
     if (ready[x]) return value[x];  // DP concept
     ll best = INT_MAX;
     for (auto c : coins) {
-        best = min(best, solve(x-c)+1);
+        best = min(best, solveRecursive(x-c)+1);
     }
-
     value[x] = best;        // memoization
     ready[x] = 1;
-
     return best;
+}
+
+ll solveIterative(ll n){
+    ll value[10000000]={0};
+    for(int i=1; i<=n; i++){
+        value[i] = INT_MAX;
+        for (auto c : coins) {
+            if (i-c >= 0){
+                value[i] = min(value[i], value[i-c]+1);
+            }
+        }
+    }
+    return value[n];
 }
 
 int main(){
     fastio;
     int tc,n,val;
-
-    ll res=solve(10000000);
-    cout << "Answer : " << res;
-
+    cout<<"Enter number of coins : ";
+    cin>>n;
+    while(n--){
+        cin>>val;
+        coins.push_back(val);
+    }
+    cout<<"Enter sum to form : ";
+    cin>>n;
+    cout << "Answer using recursive procedure : " << solveRecursive(n)<<endl;
+    cout << "Answer using Iterative procedure : " << solveIterative(n)<<endl;
     return 0;
-}   
+}
