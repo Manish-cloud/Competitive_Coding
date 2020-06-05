@@ -14,24 +14,24 @@ typedef vector<tuple<int, int, int>> vt;
 typedef set<int> si;
 const ll Mod = 1000000007;
 
-bitset <100000000> ready;
-ll value[100000000]={0};
-vi coins = {};
+bitset<100000000> ready;
+ll value[100000000] = {0};
+vi coins={};
 
-ll solveRecursive(ll x) {
+ll solveR(ll x){
     if (x < 0) return INT_MAX;
     if (x == 0) return 0;
     if (ready[x]) return value[x];  // DP concept
     ll best = INT_MAX;
     for (auto c : coins) {
-        best = min(best, solveRecursive(x-c)+1);
+        best = min(best, solveR(x-c)+1);
     }
     value[x] = best;        // memoization
     ready[x] = 1;
     return best;
 }
 
-ll solveIterative(ll n){
+ll solveI(ll n, vi coins){
     ll value[10000000]={0};
     for(int i=1; i<=n; i++){
         value[i] = INT_MAX;
@@ -45,17 +45,32 @@ ll solveIterative(ll n){
 }
 
 int main(){
-    fastio;
-    int tc,n,val;
-    cout<<"Enter number of coins : ";
-    cin>>n;
-    while(n--){
-        cin>>val;
-        coins.push_back(val);
+    int n,val;
+    int tc;
+    
+    cin>>tc;
+    while(tc--){
+        cin >> n;
+        while (n--) {
+            cin >> val;
+            coins.push_back(val);
+        }
+        cin>>n;
+        ll res = solveR(n);
+        if (res!=INT_MAX)
+            cout << "Answer using recursive procedure : " << res << endl;
+        else
+            cout<<"Not possibble to form Answer"<<endl;
+        
+        res = solveI(n, coins);
+        if (res!=INT_MAX)
+            cout << "Answer using Iterative procedure : " << res << endl;
+        else
+            cout<<"Not possibble to form Answer"<<endl;
+            
+        coins.clear();
+        ready.reset();
+        fill(value, value+100000000, 0);
     }
-    cout<<"Enter sum to form : ";
-    cin>>n;
-    cout << "Answer using recursive procedure : " << solveRecursive(n)<<endl;
-    cout << "Answer using Iterative procedure : " << solveIterative(n)<<endl;
     return 0;
 }
